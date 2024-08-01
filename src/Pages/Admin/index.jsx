@@ -1,8 +1,7 @@
 import ProtectedComponent from "../../Components/Protected";
-import { useAuth } from "../../Contexts/AuthContext";
 
 function Admin() {
-    const { token } = useAuth();
+    const token = window.localStorage.getItem("token");
     return (
       <>
         <h1 className="bg-transparent">Admin</h1>

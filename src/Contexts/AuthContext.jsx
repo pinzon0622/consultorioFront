@@ -1,7 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import axios from "axios";
+import api from "../Api/api";
+import { useEffect } from "react";
 
 const AuthContext = createContext();
+
+
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -12,8 +15,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post("http://localhost:8080/login", { username, password });
-      setToken(response.data.access_token);
+      const response = await api.post("/login", { username, password });
+      
+      window.localStorage.setItem("token", response.data.access_token);
+
       return true;
     } catch (error) {
       console.error("Inicio de sesión fallido", error);
@@ -22,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    window.localStorage.removeItem("token");
     setToken(null);
   };
 

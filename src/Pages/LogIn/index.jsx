@@ -7,7 +7,6 @@ import { useAuth } from "../../Contexts/AuthContext";
 function LogIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState(null);
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -15,6 +14,7 @@ function LogIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isSuccess = await login(username, password);
+    // const isSuccess = true;
     if (isSuccess) {
       navigate("/Admin");
     } else {
@@ -23,7 +23,7 @@ function LogIn() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-dvh pb-12">
+    <div className="flex flex-col items-center justify-center  pt-8 mt-20">
       <form
         className="flex max-w-md flex-col gap-4  w-5/12 shadow-2xl p-10"
         onSubmit={handleSubmit}

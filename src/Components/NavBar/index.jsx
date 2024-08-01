@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
 
-    const location = useLocation();
+  const location = useLocation();
 
 
   return (

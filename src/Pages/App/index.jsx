@@ -1,50 +1,67 @@
-import { useRoutes, BrowserRouter } from 'react-router-dom'
+import { useRoutes, BrowserRouter, Route, Routes } from "react-router-dom";
 
-import NavBar from '../../Components/NavBar'
-import FooterComponent from '../../Components/Footer'
+import Home from "../Home";
+import NotFound from "../NotFound";
+import About from "../About";
+import Contact from "../Contact";
+import Services from "../Services";
+import LogIn from "../LogIn";
+import Layout from "../../Components/Layout";
 
-import Home from '../Home'
-import NotFound from '../NotFound'
-import About from '../About'
-import Contact from '../Contact'
-import Services from '../Services'
-import LogIn from '../LogIn'
-import Admin from '../Admin'
-import Layout from '../../Components/Layout'
+import AdminLayout from "../../Components/AdminLayout";
+import Admin from "../Admin";
+import Patient from "../Patient";
 
-import { AuthProvider } from '../../Contexts/AuthContext'
-import ProtectedRoute from '../../Routes/ProtectedRoutes'
+import { AuthProvider } from "../../Contexts/AuthContext";
+import ProtectedRoute from "../../Routes/ProtectedRoutes";
 
-import './App.css'
-
-
-const AppRoutes = () => {
+const MainRoutes = () => {
   let routes = useRoutes([
-    {path: '/', element: <Home />},
-    {path: '/About', element: <About />},
-    {path: '/Contact', element: <Contact />},
-    {path: '/Services', element: <Services />},
-    {path: '/LogIn', element: <LogIn />},
-    {path: '/Admin', element: <ProtectedRoute><Admin /></ProtectedRoute>},
-    {path: '/*', element: <NotFound />},
+    { path: "/", element: <Home /> },
+    { path: "/About", element: <About /> },
+    { path: "/Contact", element: <Contact /> },
+    { path: "/Services", element: <Services /> },
+    { path: "/LogIn", element: <LogIn /> },
+    { path: "/*", element: <NotFound /> },
+  ]);
+  return routes;
+};
 
-  ])
-  return routes
-}
+const AdminRoutes = () => {
+  let routes = useRoutes([
+    { path: "/", element: <Admin /> },
+    { path: "Patient", element: <Patient /> },
+  ]);
+  return routes;
+};
 
 const App = () => {
   return (
     <AuthProvider>
-      <BrowserRouter >
-          <Layout>
-            <NavBar />
-            <AppRoutes />
-          </Layout>
-          <FooterComponent />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/Admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminRoutes />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              <Layout>
+                <MainRoutes />
+              </Layout>
+            }
+          />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
+  );
+};
 
-  )
-}
-
-export default App
+export default App;
