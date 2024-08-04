@@ -1,13 +1,13 @@
 import { Button, Modal, Label, TextInput } from "flowbite-react";
-import DatePicker from "../../Components/DatePicker";
 import SearchBar from "../../Components/SearchBar";
 import api from "../../Api/api";
-import GenericTable from "../../Components/GenericTable";
 import { useEffect, useState } from "react";
 
-const Patient = () => {
-  const [patients, setPatients] = useState([]);
-  const [tablePatients, setTablePatients] = useState([]);
+import GenericTable from "../../Components/GenericTable";
+
+const Dentist = () => {
+  const [dentist, setDentist] = useState([]);
+  const [tableDentist, setTableDentist] = useState([]);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState(false);
   const [idP, setIdP] = useState("");
@@ -15,42 +15,33 @@ const Patient = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [name, setName] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [direction, setDirection] = useState("");
+  const [specialty, setSpecialty] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const headers = [
-    "Nombre",
-    "Fecha Nacimiento",
-    "Direccion",
-    "Telefono",
-    "Correo",
-  ];
-  const values = ["name", "birthdate", "direction", "phone", "email"];
-  const keyTable = "idPatient";
+  const headers = ["Nombre", "Especialidad", "Telefono", "correo"];
+  const values = ["name", "specialty", "phone", "email"];
+  const keyTable = "idDentist";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (!editing) {
-        const response = await api.post("/patient", {
+        const response = await api.post("/dentist", {
           name,
-          birthdate,
-          direction,
+          specialty,
           phone,
           email,
         });
-        getPatients();
+        getDentist();
       } else {
-        const response = await api.put(`/patient/${idP}`, {
+        const response = await api.put(`/dentist/${idP}`, {
           name,
-          birthdate,
-          direction,
+          specialty,
           phone,
           email,
         });
-        getPatients();
+        getDentist();
         setEditing(false);
       }
     } catch (error) {
@@ -63,17 +54,16 @@ const Patient = () => {
   const handleReset = () => {
     setIdP("");
     setName("");
-    setBirthdate("");
-    setDirection("");
+    setSpecialty("");
     setPhone("");
     setEmail("");
   };
 
-  const getPatients = async () => {
+  const getDentist = async () => {
     try {
-      const response = await api.get("/patient");
-      setPatients(response.data);
-      setTablePatients(response.data);
+      const response = await api.get("/dentist");
+      setDentist(response.data);
+      setTableDentist(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -81,29 +71,27 @@ const Patient = () => {
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
-    searchPatient(e.target.value);
+    searchDentist(e.target.value);
   };
 
-  const searchPatient = (searchedP) => {
-    var filteredPatients = tablePatients.filter((patient) => {
-      if (patient.name.toLowerCase().includes(searchedP.toLowerCase())) {
-        return patient;
+  const searchDentist = (searchedP) => {
+    var filteredDentist = tableDentist.filter((dentist) => {
+      if (dentist.name.toLowerCase().includes(searchedP.toLowerCase())) {
+        return dentist;
       }
     });
-    setPatients(filteredPatients);
+    setDentist(filteredDentist);
   };
 
-  const editPatient = async (id) => {
+  const editDentist = async (id) => {
     try {
-      const response = await api.get(`/patient/${id}`);
-
+      const response = await api.get(`/dentist/${id}`);
       setEditing(true);
       setShowModal(true);
-      setIdP(response.data.idPatient);
+      setIdP(response.data.idDentist);
 
       setName(response.data.name);
-      setBirthdate(response.data.birthdate);
-      setDirection(response.data.direction);
+      setSpecialty(response.data.specialty);
       setPhone(response.data.phone);
       setEmail(response.data.email);
     } catch (error) {
@@ -111,10 +99,10 @@ const Patient = () => {
     }
   };
 
-  const deletePatient = async (id) => {
+  const deleteDentist = async (id) => {
     try {
-      const response = await api.delete(`/patient/${id}`);
-      getPatients();
+      const response = await api.delete(`/dentist/${id}`);
+      getDentist();
     } catch (error) {
       console.error(error);
     }
@@ -122,12 +110,12 @@ const Patient = () => {
 
   const handleDelete = async (confirm) => {
     if (confirm) {
-      await deletePatient(idP);
+      await deleteDentist(idP);
     }
   };
 
   useEffect(() => {
-    getPatients();
+    getDentist();
   }, []);
 
   return (
@@ -136,23 +124,23 @@ const Patient = () => {
         <SearchBar
           search={search}
           handleSearch={handleSearch}
-          placeholder="Buscar paciente"
+          placeholder="Buscar dentista"
         />
       </section>
       <div className="flex justify-between items-center px-6 py-6">
-        <h1 className=" text-3xl ">Pacientes</h1>
+        <h1 className=" text-3xl ">Dentistas</h1>
         <Button color="dark" onClick={() => setShowModal(true)}>
-          Añadir pacientes
+          Añadir Dentista
         </Button>
       </div>
 
       <div className="overflow-x-auto px-6">
         <GenericTable
           headers={headers}
-          data={patients}
+          data={dentist}
           values={values}
           keyValue={keyTable}
-          editRow={(e) => editPatient(e)}
+          editRow={(e) => editDentist(e)}
           setIdDelete={setIdP}
           deleteMethod={handleDelete}
         />
@@ -172,7 +160,7 @@ const Patient = () => {
         <Modal.Body>
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 ">
-              {editing ? "Editar Paciente" : "Añadir Paciente"}
+              {editing ? "Editar Dentista" : "Añadir Paciente"}
             </h3>
             <form onSubmit={handleSubmit}>
               <div>
@@ -189,23 +177,14 @@ const Patient = () => {
                 />
               </div>
               <div>
-                <div>
-                  <Label htmlFor="Fecha" value="Fecha de Nacimiento" />
-                </div>
-                <DatePicker
-                  value={birthdate}
-                  onChange={(e) => setBirthdate(e.target.value)}
-                />
-              </div>
-              <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="Direccion" value="Direccion" />
+                  <Label htmlFor="Especialidad" value="Especialidad" />
                 </div>
                 <TextInput
-                  id="direccion"
-                  onChange={(e) => setDirection(e.target.value)}
-                  value={direction}
-                  placeholder="Direccion"
+                  id="specialty"
+                  onChange={(e) => setSpecialty(e.target.value)}
+                  value={specialty}
+                  placeholder="Especialidad"
                   required
                 />
               </div>
@@ -250,4 +229,4 @@ const Patient = () => {
   );
 };
 
-export default Patient;
+export default Dentist;

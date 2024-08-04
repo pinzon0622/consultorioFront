@@ -11,6 +11,9 @@ import Layout from "../../Components/Layout";
 import AdminLayout from "../../Components/AdminLayout";
 import Admin from "../Admin";
 import Patient from "../Patient";
+import Dentist from "../Dentist";
+import Date from "../Date";
+
 
 import { AuthProvider } from "../../Contexts/AuthContext";
 import ProtectedRoute from "../../Routes/ProtectedRoutes";
@@ -31,6 +34,8 @@ const AdminRoutes = () => {
   let routes = useRoutes([
     { path: "/", element: <Admin /> },
     { path: "Patient", element: <Patient /> },
+    { path: "Dentist", element: <Dentist /> },
+    { path: "Date", element: <Date /> },
   ]);
   return routes;
 };

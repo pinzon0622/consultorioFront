@@ -1,12 +1,12 @@
 import { Sidebar } from "flowbite-react";
 import {
-  HiArrowSmRight,
   HiChartPie,
   HiInbox,
-  HiCalendar,
+  HiOutlineCalendar,
   HiTable,
-  HiUser,
+  HiOutlineUserGroup,
   HiLogout,
+  HiOutlineIdentification,
 } from "react-icons/hi";
 
 import { useAuth } from "../../Contexts/AuthContext";
@@ -22,29 +22,22 @@ const AdminSidebar = () => {
         className="fixed left-0 h-full border-r-2"
       >
         <Sidebar.Items className="relative h-full flex flex-col">
-          <Sidebar.Logo
-            href="/Admin"
-            img={logo}
-            imgAlt="Logo"
-          >
+          <Sidebar.Logo href="/Admin" img={logo} imgAlt="Logo">
             Consultorio
           </Sidebar.Logo>
           <Sidebar.ItemGroup>
-            <Sidebar.Item href="/Admin/Patient" icon={HiUser}>
+            <Sidebar.Item href="/Admin/Patient" icon={HiOutlineUserGroup}>
               Pacientes
             </Sidebar.Item>
-            <Sidebar.Collapse icon={HiCalendar} label="Citas">
-              <Sidebar.Item href="#">Ver Citas</Sidebar.Item>
-              <Sidebar.Item href="#">Agregar Citas</Sidebar.Item>
-            </Sidebar.Collapse>
+            <Sidebar.Item href="/Admin/Dentist" icon={HiOutlineIdentification}>
+              Dentistas
+            </Sidebar.Item>
+            <Sidebar.Item href="/Admin/Date " icon ={HiOutlineCalendar}>Citas</Sidebar.Item>
             <Sidebar.Item href="#" icon={HiChartPie}>
               Tratamientos
             </Sidebar.Item>
             <Sidebar.Item href="#" icon={HiChartPie}>
               Procesos
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiCalendar}>
-              Dentistas
             </Sidebar.Item>
             <Sidebar.Item href="#" icon={HiInbox}>
               Historial Dental
