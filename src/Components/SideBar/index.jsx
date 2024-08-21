@@ -1,12 +1,12 @@
 import { Sidebar } from "flowbite-react";
 import {
-  HiChartPie,
-  HiInbox,
+  HiOutlineCog,
+  HiOutlineChartBar,
   HiOutlineCalendar,
-  HiTable,
   HiOutlineUserGroup,
   HiLogout,
   HiOutlineIdentification,
+  HiOutlineClipboardList
 } from "react-icons/hi";
 
 import { useAuth } from "../../Contexts/AuthContext";
@@ -26,6 +26,9 @@ const AdminSidebar = () => {
             Consultorio
           </Sidebar.Logo>
           <Sidebar.ItemGroup>
+            <Sidebar.Item href="/Admin" icon={HiOutlineChartBar}>
+              Dashboard
+            </Sidebar.Item>
             <Sidebar.Item href="/Admin/Patient" icon={HiOutlineUserGroup}>
               Pacientes
             </Sidebar.Item>
@@ -33,14 +36,11 @@ const AdminSidebar = () => {
               Dentistas
             </Sidebar.Item>
             <Sidebar.Item href="/Admin/Date " icon ={HiOutlineCalendar}>Citas</Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiChartPie}>
-              Tratamientos
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiChartPie}>
-              Procesos
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiInbox}>
+            <Sidebar.Item href="/Admin/History" icon={HiOutlineClipboardList}>
               Historial Dental
+            </Sidebar.Item>
+            <Sidebar.Item href="/Admin/Process" icon={HiOutlineCog}>
+              Procesos
             </Sidebar.Item>
             <Sidebar.Item href="" icon={HiLogout} onClick={logout}>
               Cerrar Sesión

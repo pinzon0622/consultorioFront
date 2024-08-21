@@ -4,8 +4,6 @@ import { useEffect } from "react";
 
 const AuthContext = createContext();
 
-
-
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -16,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       const response = await api.post("/login", { username, password });
-      
+      setToken(response.data.access_token);
       window.localStorage.setItem("token", response.data.access_token);
 
       return true;
@@ -26,8 +24,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+
   const logout = () => {
     window.localStorage.removeItem("token");
+    window.localStorage.removeItem("username");
     setToken(null);
   };
 

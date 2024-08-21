@@ -1,30 +1,27 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function ProtectedComponent({ token }) {
-    const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
+  useEffect(() => {
     const fetchProtectedData = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/protected', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setMessage(response.data.logged_in_as.username);
-        } catch (error) {
-            setMessage('No autorizado');
-        }
+      try {
+        const response = await axios.get("http://localhost:8080/protected", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMessage(response.data.logged_in_as.username);
+        window.localStorage.setItem("username", response.data.logged_in_as.username);
+      } catch (error) {
+        console.error(error);
+      }
     };
+    fetchProtectedData();
+  }, []);
 
-    return (
-        <div>
-            <button onClick={fetchProtectedData}>Obtener Datos Protegidos</button>
-            {message && <p>Hola {message}</p>}
-            
-        </div>
-    );
-    
+  return <p> Bienvenido {message}!</p>;
 }
 
 export default ProtectedComponent;

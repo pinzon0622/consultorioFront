@@ -13,19 +13,27 @@ function LogIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isSuccess = await login(username, password);
-    // const isSuccess = true;
-    if (isSuccess) {
-      navigate("/Admin");
-    } else {
-      setError("Inicio de sesión fallido. Verifica tu nombre de usuario y contraseña.");
+    try {
+      const isSuccess = await login(username, password);
+      if (isSuccess) {
+        navigate("/Admin");
+      } else {
+        setError(
+          "Inicio de sesión fallido. Verifica tu nombre de usuario y contraseña."
+        );
+      }
+    } catch (error) {
+      console.error("Inicio de sesión fallido", error.response?.data || error.message);
+      setError(
+        "Inicio de sesión fallido. Verifica tu nombre de usuario y contraseña."
+      );
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center  pt-8 mt-20">
+    <div className="flex flex-col items-center justify-center  bg-cyan-800 h-screen">
       <form
-        className="flex max-w-md flex-col gap-4  w-5/12 shadow-2xl p-10"
+        className="flex max-w-md flex-col gap-4  w-5/12 shadow-2xl p-10 bg-slate-950"
         onSubmit={handleSubmit}
       >
         <div>
@@ -65,7 +73,7 @@ function LogIn() {
         </div>
         <Button type="submit">Iniciar Sesión</Button>
       </form>
-      {error && <p className="text-red-400 pt-5" >{error}</p>}
+      {error && <p className="text-red-400 pt-5">{error}</p>}
     </div>
   );
 }

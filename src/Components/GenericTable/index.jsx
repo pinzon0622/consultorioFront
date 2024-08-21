@@ -3,25 +3,31 @@ import { HiPencil, HiTrash } from "react-icons/hi";
 import { useState } from "react";
 import ModalDelete from "../ModalDelete";
 
-
-
-const GenericTable = ({ headers, data, values, keyValue, editRow, setIdDelete, deleteMethod, sortMehod }) => {
-
+const GenericTable = ({
+  headers,
+  data,
+  values,
+  keyValue,
+  editRow,
+  setIdDelete,
+  deleteMethod,
+  sortMehod,
+}) => {
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const sortedData = sortMehod? sortMehod(data): data;
+  const sortedData = sortMehod ? sortMehod(data) : data;
 
-  const handleDeleteChange = (confirm)=>{
-    if(confirm){
+  const handleDeleteChange = (confirm) => {
+    if (confirm) {
       deleteMethod(confirm);
       setShowModalDelete(false);
-    }else{
+    } else {
       setShowModalDelete(false);
     }
-  }
+  };
 
   //Metodo para evaluar si hay un punto en el valor y obtener el valor de un objeto anidado
   const getValue = (obj, path) => {
-    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    return path.split(".").reduce((acc, part) => acc && acc[part], obj);
   };
 
   return (
@@ -43,7 +49,7 @@ const GenericTable = ({ headers, data, values, keyValue, editRow, setIdDelete, d
                 <Dropdown label="" inline>
                   <Dropdown.Item
                     icon={HiPencil}
-                    onClick={ (e) => editRow(row[keyValue])}
+                    onClick={(e) => editRow(row[keyValue])}
                   >
                     Editar
                   </Dropdown.Item>
@@ -52,7 +58,6 @@ const GenericTable = ({ headers, data, values, keyValue, editRow, setIdDelete, d
                     onClick={(e) => {
                       setIdDelete(row[keyValue]);
                       setShowModalDelete(true);
-                    
                     }}
                     className="text-red-500"
                   >
@@ -65,12 +70,11 @@ const GenericTable = ({ headers, data, values, keyValue, editRow, setIdDelete, d
         </Table.Body>
       </Table>
 
-        <ModalDelete 
-          show={showModalDelete}
-          handleClose={() => setShowModalDelete(false)}
-          handleDelete={handleDeleteChange}
-        />
-
+      <ModalDelete
+        show={showModalDelete}
+        handleClose={() => setShowModalDelete(false)}
+        handleDelete={handleDeleteChange}
+      />
     </div>
   );
 };

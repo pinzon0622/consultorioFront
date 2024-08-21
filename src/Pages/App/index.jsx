@@ -13,6 +13,8 @@ import Admin from "../Admin";
 import Patient from "../Patient";
 import Dentist from "../Dentist";
 import Date from "../Date";
+import DentalHistory from "../DentalHistory";
+import Process from "../Process";
 
 
 import { AuthProvider } from "../../Contexts/AuthContext";
@@ -36,6 +38,8 @@ const AdminRoutes = () => {
     { path: "Patient", element: <Patient /> },
     { path: "Dentist", element: <Dentist /> },
     { path: "Date", element: <Date /> },
+    { path: "History", element: <DentalHistory /> },
+    { path: "Process", element: <Process /> },
   ]);
   return routes;
 };

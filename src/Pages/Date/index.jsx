@@ -209,9 +209,9 @@ const DateComponent = () => {
           Añadir Cita
         </Button>
       </div>
-      <div className="flex flex-1 justify-center gap-14 items-center w-full ">
+      <div className="flex flex-1 justify-center gap-14  w-full ">
         <section className="">
-          <div className="flex w-full max-w-xs flex-col gap-2 pb-7">
+          <div className="flex w-full max-w-xs flex-col gap-2 pb-12">
             <Select
               label="Doctor"
               placeholder="Seleccione el Dentista"
@@ -266,12 +266,6 @@ const DateComponent = () => {
             </h3>
             <form onSubmit={handleSubmit } className="flex flex-col gap-4">
               <div>
-                <div className="mb-2 block">
-                  <Label
-                    htmlFor="Nombre del Paciente"
-                    value="Nombre del Paciente"
-                  />
-                </div>
                 <TextInput
                   className="border-none"
                   id="name"

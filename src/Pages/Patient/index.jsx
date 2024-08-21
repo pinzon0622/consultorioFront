@@ -1,9 +1,11 @@
 import { Button, Modal, Label, TextInput } from "flowbite-react";
-import DatePicker from "../../Components/DatePicker";
 import SearchBar from "../../Components/SearchBar";
 import api from "../../Api/api";
 import GenericTable from "../../Components/GenericTable";
 import { useEffect, useState } from "react";
+import { Calendar, DatePicker } from "@nextui-org/react";
+import {parseDate, getLocalTimeZone} from "@internationalized/date";
+import {useDateFormatter} from "@react-aria/i18n";
 
 const Patient = () => {
   const [patients, setPatients] = useState([]);
@@ -15,7 +17,7 @@ const Patient = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [name, setName] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [birthdate, setBirthdate] = useState(null);
   const [direction, setDirection] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -30,13 +32,22 @@ const Patient = () => {
   const values = ["name", "birthdate", "direction", "phone", "email"];
   const keyTable = "idPatient";
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const date = formatDate(birthdate);
     try {
       if (!editing) {
         const response = await api.post("/patient", {
           name,
-          birthdate,
+          birthdate: date,
           direction,
           phone,
           email,
@@ -45,7 +56,7 @@ const Patient = () => {
       } else {
         const response = await api.put(`/patient/${idP}`, {
           name,
-          birthdate,
+          birthdate: date,
           direction,
           phone,
           email,
@@ -63,7 +74,7 @@ const Patient = () => {
   const handleReset = () => {
     setIdP("");
     setName("");
-    setBirthdate("");
+    setBirthdate(null);
     setDirection("");
     setPhone("");
     setEmail("");
@@ -94,15 +105,20 @@ const Patient = () => {
   };
 
   const editPatient = async (id) => {
+   
+    
     try {
       const response = await api.get(`/patient/${id}`);
 
       setEditing(true);
       setShowModal(true);
       setIdP(response.data.idPatient);
-
       setName(response.data.name);
-      setBirthdate(response.data.birthdate);
+
+      const patientBirthdate = formatDate(response.data.birthdate);
+      const parsedBirthdate = parseDate(patientBirthdate);
+      setBirthdate(parsedBirthdate);
+
       setDirection(response.data.direction);
       setPhone(response.data.phone);
       setEmail(response.data.email);
@@ -189,13 +205,16 @@ const Patient = () => {
                 />
               </div>
               <div>
-                <div>
-                  <Label htmlFor="Fecha" value="Fecha de Nacimiento" />
+                <div className="w-full max-w-xl flex flex-row gap-4 py-2">
+                  <DatePicker
+                    label="Fecha de Nacimiento"
+                    labelPlacement="outside"
+                    variant="flat"
+                    showMonthAndYearPickers
+                    value={birthdate}
+                    onChange={setBirthdate}
+                  />
                 </div>
-                <DatePicker
-                  value={birthdate}
-                  onChange={(e) => setBirthdate(e.target.value)}
-                />
               </div>
               <div>
                 <div className="mb-2 block">
